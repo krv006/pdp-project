@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_filters',
     'drf_spectacular',
     'rest_framework_simplejwt',
+    'rest_framework.authtoken',
 
 ]
 
@@ -76,7 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'root.wsgi.application'
-# AUTH_USER_MODEL = 'apps.User'
+AUTH_USER_MODEL = 'users.User'
 
 DATABASES = {
     'default': {
