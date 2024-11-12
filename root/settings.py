@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'rest_framework_simplejwt',
     'rest_framework.authtoken',
-
+    'colorfield',
 ]
 
 MIDDLEWARE = [

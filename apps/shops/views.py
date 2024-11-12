@@ -6,14 +6,14 @@ from shops.models import Category, Product
 from shops.serializers import CategoryModelSerializer, ProductListModelSerializer
 
 
-@extend_schema(tags=['category'])
+@extend_schema(tags=['shops'])
 class CategoryListCreateAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategoryModelSerializer
     filterset_class = CategoryFilter
 
 
-@extend_schema(tags=['product'])
+@extend_schema(tags=['shops'])
 @extend_schema(description='product')
 class ProductListCreateAPIView(ListCreateAPIView):
     queryset = Product.objects.all()

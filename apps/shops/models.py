@@ -1,3 +1,4 @@
+from colorfield.fields import ColorField
 from django.db.models import Model, PositiveIntegerField, ForeignKey, CASCADE, EmailField, ImageField, TextChoices, \
     CharField, SmallIntegerField, BooleanField, URLField, TextField
 from django_ckeditor_5.fields import CKEditor5Field
@@ -29,12 +30,24 @@ class Product(Model):
         MALE = 'Male', 'male'
         FEMALE = 'Female', 'female'
 
+    class Color(TextChoices):
+        WHITE = 'White', 'white'
+        RED = 'Red', 'red'
+        BLUE = 'Blue', 'blue'
+        GREEN = 'Green', 'green'
+        YELLOW = 'Yellow', 'yellow'
+        BROWN = 'Brown', 'brown'
+        GREY = 'Grey', 'grey'
+        SKY_BLUE = 'Sky Blue', 'sky blue'
+        BLACK = 'Black', 'black'
+
     name = CharField(max_length=255)
     price = PositiveIntegerField(default=0)
     description = CKEditor5Field()
     discount_price = SmallIntegerField(default=0, null=True, blank=True)
     size = CharField(max_length=2, choices=Size.choices, default=Size.F50)
     poll = CharField(max_length=10, choices=Poll.choices, default=Poll.MALE)
+    color = ColorField(choices=Color.choices, default=Color.WHITE)
     material = CharField(max_length=255, null=True, blank=True)
     lining = CharField(max_length=255, null=True, blank=True)  # todo podkladka
     made_from = CharField(max_length=255, null=True, blank=True)
@@ -86,3 +99,4 @@ class SiteSettings(Model):
 class QuickOrder(Model):
     name = CharField(max_length=255)
     phone_number = CharField(max_length=255)
+    order = ForeignKey('shops.Product', CASCADE, related_name='quick_orders')
