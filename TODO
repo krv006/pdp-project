@@ -1,0 +1,15 @@
+LOGIN REGISTER
+    JWT TOKEN ✅
+
+USER MODEL ✅
+
+ORDER
+    model ❎
+    serializer ❎
+    view ❎
+
+QUICK ORDER
+    model ❎ todo ForeignKey User model
+    serializer ❎
+    view ❎
+
