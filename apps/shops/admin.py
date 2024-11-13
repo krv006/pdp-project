@@ -20,6 +20,7 @@ class CategoryAdmin(ModelAdmin):
 @admin.register(Address)
 class AddressAdmin(ModelAdmin):
     list_display = 'first_name', 'last_name', 'phone_number', 'email',
+    list_editable = 'email', 'phone_number',
 
 
 @admin.register(Image)
@@ -44,7 +45,8 @@ class PaymentAdmin(ModelAdmin):
 
 @admin.register(Brand)
 class BrandAdmin(ModelAdmin):
-    list_display = 'name',
+    list_display = 'name', 'image',
+    list_editable = 'image',
     # @admin.action(description='rasm')
     # def img(self, obj:Brand):
     #     a = obj.image
@@ -52,6 +54,3 @@ class BrandAdmin(ModelAdmin):
     #         return mark_safe(f'<img src="{a.url}" alt="Description of the image" width="500" height="300">')
     #     else:
     #         return None
-
-    exclude = 'image',
-    # list_editable = 'image',
