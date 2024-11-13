@@ -11,18 +11,19 @@ class ProductFilter(FilterSet):
     max_price = NumberFilter(field_name="price", lookup_expr='lte')
     poll = ChoiceFilter(choices=Product.Poll.choices)
     size = ChoiceFilter(choices=Product.Size.choices)
+    color = ChoiceFilter(choices=Product.Color.choices)
 
     class Meta:
         model = Product
-        fields = 'category', 'poll', 'size',  # todo category id filter
+        fields = 'category', 'poll', 'size', 'color',  # todo category id filter
 
 
 class CategoryFilter(FilterSet):
-    n = NumberFilter(method='filter_by_product_count')
+    # n = NumberFilter(method='filter_by_product_count')
 
     class Meta:
         model = Category
         fields = 'name',
 
-    def filter_by_product_count(self, queryset, field, value):
-        return queryset.annotate(product__count=Count('products')).filter(product__count=value)
+    # def filter_by_product_count(self, queryset, field, value):
+    #     return queryset.annotate(product__count=Count('products')).filter(product__count=value)

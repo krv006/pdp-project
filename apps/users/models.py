@@ -1,19 +1,17 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import BooleanField, EmailField, DateField, CharField
+from django.db.models import BooleanField, EmailField, CharField
 
-from users.managers import UserManager
+from users.managers import CustomUserManager
 
 
 class User(AbstractUser):
     username = None
-    first_name = CharField(max_length=50)
-    last_name = CharField(max_length=50)
-    date_of_birth = DateField(null=True, blank=True)
-    phone_number = CharField(max_length=15, null=True, blank=True)
+    first_name = None
+    last_name = None
     email = EmailField(unique=True)
+    name = CharField(max_length=255)
     is_active = BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-
-    objects = UserManager()
+    objects = CustomUserManager()

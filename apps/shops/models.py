@@ -6,9 +6,10 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 from django.contrib.auth.models import AbstractUser
 
+from shared.models import BaseSlugModel
 
-class Category(MPTTModel):
-    name = CharField(max_length=255)
+
+class Category(MPTTModel, BaseSlugModel):
     parent = TreeForeignKey('self', CASCADE, null=True, blank=True, related_name='children')
     background_image = ImageField(upload_to='categories/')
 

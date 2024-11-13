@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     # My Apps
     'shops',
     'users',
+    'shared',
 
     # Third Party packages
     'django_ckeditor_5',
