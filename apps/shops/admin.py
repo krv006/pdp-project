@@ -1,5 +1,8 @@
+import os
+
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
+from django.utils.safestring import mark_safe
 
 from shops.models import Product, Category, Address, Brand, Payment, Image, SiteSettings, QuickOrder
 
@@ -16,7 +19,7 @@ class CategoryAdmin(ModelAdmin):
 
 @admin.register(Address)
 class AddressAdmin(ModelAdmin):
-    pass
+    list_display = 'first_name', 'last_name', 'phone_number', 'email',
 
 
 @admin.register(Image)
@@ -41,4 +44,14 @@ class PaymentAdmin(ModelAdmin):
 
 @admin.register(Brand)
 class BrandAdmin(ModelAdmin):
-    pass
+    list_display = 'name',
+    # @admin.action(description='rasm')
+    # def img(self, obj:Brand):
+    #     a = obj.image
+    #     if a:
+    #         return mark_safe(f'<img src="{a.url}" alt="Description of the image" width="500" height="300">')
+    #     else:
+    #         return None
+
+    exclude = 'image',
+    # list_editable = 'image',
