@@ -13,7 +13,7 @@ from users.serializers import RegisterUserModelSerializer, LoginUserModelSeriali
 class RegisterCreateAPIView(CreateAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = RegisterUserModelSerializer
-    permission_classes = [AllowAny]
+    permission_classes = AllowAny,
     authentication_classes = []
 
     def create(self, request, *args, **kwargs):
@@ -27,7 +27,7 @@ class RegisterCreateAPIView(CreateAPIView):
 
 @extend_schema(tags=['users'])
 class LoginAPIView(GenericAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = AllowAny,
     authentication_classes = ()
 
     # This method should be defined for GenericAPIView to work correctly

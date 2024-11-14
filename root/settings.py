@@ -33,9 +33,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # My Apps
-    'shops',
     'users',
-    'shared',
+    'shops',
 
     # Third Party packages
     'django_ckeditor_5',

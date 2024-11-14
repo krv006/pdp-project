@@ -9,7 +9,7 @@ admin.AdminSite.login_form = CustomAdminAuthenticationForm
 
 @admin.register(User)
 class UserAdmin(ModelAdmin):
-    pass
-
+    list_display = 'username', 'first_name', 'last_name', 'email', 'is_active',
+    list_editable =  'is_active',
 
 # admin.AdminSite.login_form = CustomAdminAuthenticationForm

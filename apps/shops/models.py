@@ -1,12 +1,31 @@
 from colorfield.fields import ColorField
+from django.contrib.auth.models import AbstractUser
 from django.db.models import Model, PositiveIntegerField, ForeignKey, CASCADE, EmailField, ImageField, TextChoices, \
     CharField, SmallIntegerField, BooleanField, URLField, TextField
 from django_ckeditor_5.fields import CKEditor5Field
 from mptt.models import MPTTModel, TreeForeignKey
 
-from django.contrib.auth.models import AbstractUser
+from django.db.models import CharField, DateTimeField, Model, SlugField
+from django.utils.text import slugify
 
-from shared.models import BaseSlugModel
+
+class BaseSlugModel(Model):
+    name = CharField(max_length=255)
+    slug = SlugField(max_length=255, unique=True, blank=True)
+    created_at = DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+            original_slug = self.slug
+            counter = 1
+            while self.__class__.objects.filter(slug=self.slug).exists():
+                self.slug = f"{original_slug}-{counter}"
+                counter += 1
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 
 
 class Category(MPTTModel, BaseSlugModel):
