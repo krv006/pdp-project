@@ -28,6 +28,14 @@ class BaseSlugModel(Model):
         return self.name
 
 
+class TimeBaseModel(Model):
+    created_at = DateTimeField(auto_now_add=True)
+    updated_at = DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.created_at} - {self.updated_at}'
+
+
 class Category(MPTTModel, BaseSlugModel):
     parent = TreeForeignKey('self', CASCADE, null=True, blank=True, related_name='children')
     background_image = ImageField(upload_to='categories/')
@@ -114,6 +122,13 @@ class Image(Model):
 class SiteSettings(Model):
     instagram = URLField()
     telegram = URLField()
+
+
+class Order(TimeBaseModel):
+    product = ForeignKey('shops.Product', CASCADE, related_name='orders')
+    address = ForeignKey('shops.Address', CASCADE, related_name='orders')
+    owner = ForeignKey('users.User', CASCADE, related_name='orders')
+    payment = ForeignKey('shops.Payment', CASCADE, related_name='orders')
 
 
 class QuickOrder(Model):
