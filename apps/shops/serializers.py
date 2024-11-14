@@ -18,3 +18,4 @@ class ProductListModelSerializer(ModelSerializer):
         repr = super().to_representation(instance)
         repr['category'] = CategoryModelSerializer(instance.category, context=self.context).data
         return repr
+
