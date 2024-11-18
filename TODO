@@ -10,12 +10,12 @@ ADDRESS MODEL ✅
 PAYMENT MODEL ✅
 
 ORDER
-    model ❎
+    model ✅
     serializer ❎
     view ❎
 
 QUICK ORDER
-    model ❎ todo ForeignKey User model
+    model ✅
     serializer ❎
     view ❎
 
@@ -31,7 +31,7 @@ CATEGORY MODEL
     MODEL ✅
     SERIALIZER ✅
     VIEW ✅
-    FILTER ❎ CATEGORY GA TEGISHLI PRODUCTLAR CHIQISHI KERAK
+    FILTER ✅ CATEGORY GA TEGISHLI PRODUCTLAR CHIQISHI KERAK
 
 
 COMMON

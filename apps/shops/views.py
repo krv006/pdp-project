@@ -30,6 +30,7 @@ class ProductListCreateAPIView(ListCreateAPIView):
     # TODO mana shu yerda created_at di qoshsa eng yangi eng eski -created_at shunaqa qilish kerak boaldi
 
 
+@extend_schema(tags=['shops'])
 class ProductsByCategoryView(ListAPIView):
     serializer_class = ProductListModelSerializer
 
