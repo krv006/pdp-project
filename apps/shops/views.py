@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from shops.filters import CategoryFilter, ProductFilter
 from shops.models import Category, Product, Order, OrderItem
@@ -49,12 +50,35 @@ class ProductsByCategoryView(ListAPIView):
             return Response({"error": "Category not found."}, status=status.HTTP_404_NOT_FOUND)
 
 
-@extend_schema(tags=['order'])
-class OrderListAPIView(ListCreateAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+# @extend_schema(tags=['order'])
+# class OrderViewSet(ModelViewSet):
+#     queryset = Order.objects.prefetch_related('items__product').all()
+#     serializer_class = OrderSerializer
+#
+#     def create(self, request, *args, **kwargs):
+#         data = request.data
+#         order_items = data.pop('items', [])
+#         order = Order.objects.create(**data)
+#
+#         for item in order_items:
+#             product = Product.objects.get(id=item['product'])
+#             OrderItem.objects.create(
+#                 order=order,
+#                 product=product,
+#                 quantity=item['quantity']
+#             )
+#
+#         serializer = self.get_serializer(order)
+#         return Response(serializer.data)
 
 @extend_schema(tags=['order'])
-class OrderItemListCreateAPIView(ListCreateAPIView):
-    queryset = OrderItem.objects.all()
+class OrderListCreateAPIView(ListCreateAPIView):
+    queryset = Order.objects.prefetch_related('items__product').all()
     serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
+        return Response(serializer.data, status=201)

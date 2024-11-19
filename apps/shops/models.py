@@ -21,7 +21,7 @@ class BaseSlugModel(Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 
 class TimeBaseModel(Model):
@@ -40,7 +40,7 @@ class Category(MPTTModel, BaseSlugModel):
         order_insertion_by = ['name']
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 
 class Product(Model):
@@ -77,6 +77,9 @@ class Product(Model):
     made_from = CharField(max_length=255, null=True, blank=True)
     category = ForeignKey('shops.Category', CASCADE, related_name='products')
 
+    def __str__(self):
+        return f"{self.name} - {self.price}, {self.category}"
+
     # TODO discount_price mana shuni kiritganda nechi foiz sale boletganini xam chiqazib berishi kerak -> ustozdan sorimiz
     # TODO sale nechi foiz kiritganda shunda summasini ozi aftamatik olishi kerak -> ustozdan sorimiz
 
@@ -96,10 +99,16 @@ class Address(Model):
     phone_number = CharField(max_length=100)
     description = TextField()
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} {self.phone_number}"
+
 
 class Brand(Model):
     name = CharField(max_length=255)
     image = ImageField(upload_to='brand/')
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Payment(Model):
@@ -108,6 +117,9 @@ class Payment(Model):
     delivery_home = BooleanField(db_default=True)
     SDEK_pickup_point = BooleanField(db_default=False)
     region = CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name} {self.surname}, {self.delivery_home}"
 
 
 class Image(Model):
@@ -127,11 +139,12 @@ class Order(TimeBaseModel):
 
 class OrderItem(Model):
     order = ForeignKey('shops.Order', CASCADE, related_name='items')
-    product = ForeignKey('shops.Product', CASCADE, related_name='items')
+    product = ForeignKey('shops.Product', CASCADE)
     quantity = PositiveIntegerField()
 
     def __str__(self):
         return f"{self.product.name} - {self.quantity} pcs"
+
 
 
 class QuickOrder(Model):

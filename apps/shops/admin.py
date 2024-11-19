@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 from django.utils.safestring import mark_safe
 
-from shops.models import Product, Category, Address, Brand, Payment, Image, SiteSettings, QuickOrder
+from shops.models import Product, Category, Address, Brand, Payment, Image, SiteSettings, QuickOrder, Order
 
 
 @admin.register(Product)
@@ -37,6 +37,9 @@ class SiteSettingsAdmin(ModelAdmin):
 class QuickOrderAdmin(ModelAdmin):
     pass
 
+@admin.register(Order)
+class OrderAdmin(ModelAdmin):
+    pass
 
 @admin.register(Payment)
 class PaymentAdmin(ModelAdmin):
