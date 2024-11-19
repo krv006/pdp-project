@@ -11,8 +11,9 @@ PAYMENT MODEL ✅
 
 ORDER
     model ✅
-    serializer ❎
-    view ❎
+    serializer ✅
+    view ✅
+    order di get qilganda togri chiqazish ❎
 
 QUICK ORDER
     model ✅
