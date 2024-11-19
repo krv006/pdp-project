@@ -99,7 +99,7 @@ class Address(Model):
 
 class Brand(Model):
     name = CharField(max_length=255)
-    image = ImageField(upload_to='images/brand/')
+    image = ImageField(upload_to='brand/')
 
 
 class Payment(Model):
@@ -112,12 +112,7 @@ class Payment(Model):
 
 class Image(Model):
     image = ImageField(upload_to='images/product/')
-    product = ForeignKey('shops.Product', on_delete=CASCADE, related_name='images')
-
-
-class SiteSettings(Model):
-    instagram = URLField()
-    telegram = URLField()
+    product = ForeignKey('shops.Product', CASCADE, related_name='images')
 
 
 class Order(TimeBaseModel):
@@ -126,8 +121,25 @@ class Order(TimeBaseModel):
     owner = ForeignKey('users.User', CASCADE, related_name='orders')
     payment = ForeignKey('shops.Payment', CASCADE, related_name='orders')
 
+    def __str__(self):
+        return f"Order {self.id} for {self.owner.email}"
+
+
+class OrderItem(Model):
+    order = ForeignKey('shops.Order', CASCADE, related_name='items')
+    product = ForeignKey('shops.Product', CASCADE, related_name='items')
+    quantity = PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.product.name} - {self.quantity} pcs"
+
 
 class QuickOrder(Model):
     name = CharField(max_length=255)
     phone_number = CharField(max_length=255)
     order = ForeignKey('shops.Product', CASCADE, related_name='quick_orders')
+
+
+class SiteSettings(Model):
+    instagram = URLField()
+    telegram = URLField()

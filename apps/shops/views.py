@@ -5,8 +5,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from shops.filters import CategoryFilter, ProductFilter
-from shops.models import Category, Product
-from shops.serializers import CategoryModelSerializer, ProductListModelSerializer
+from shops.models import Category, Product, Order, OrderItem
+from shops.serializers import CategoryModelSerializer, ProductListModelSerializer, OrderSerializer
 
 
 @extend_schema(tags=['shops'])
@@ -47,3 +47,14 @@ class ProductsByCategoryView(ListAPIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Category.DoesNotExist:
             return Response({"error": "Category not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+@extend_schema(tags=['order'])
+class OrderListAPIView(ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+@extend_schema(tags=['order'])
+class OrderItemListCreateAPIView(ListCreateAPIView):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderSerializer
