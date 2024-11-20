@@ -13,10 +13,13 @@ class ProductListModelSerializer(ModelSerializer):
 
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ('name', 'price', 'description', 'discount_price', 'size', 'poll', 'color',
+                  'material', 'lining', 'made_from', 'category',)
 
 
 class OrderItemSerializer(ModelSerializer):
+    product = ProductListModelSerializer(read_only=True)
+
     class Meta:
         model = OrderItem
         fields = ['id', 'product', 'quantity']
@@ -27,7 +30,7 @@ class OrderSerializer(ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'product', 'address', 'owner', 'payment', 'items']
+        fields = ['id', 'address', 'owner', 'payment', 'items']
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
