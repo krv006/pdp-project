@@ -1,10 +1,19 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from rest_framework import serializers
+from rest_framework.fields import EmailField, CharField
+from rest_framework.serializers import ModelSerializer, Serializer
+
+from users.models import User
+
+
+class UserModelSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'is_active', 'email', ]
 
 
 # Register serializer
-class RegisterUserModelSerializer(serializers.ModelSerializer):
+class RegisterUserModelSerializer(ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name', 'email', 'password']
@@ -16,9 +25,9 @@ class RegisterUserModelSerializer(serializers.ModelSerializer):
 
 
 # Login serializer
-class LoginUserModelSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
+class LoginUserModelSerializer(Serializer):
+    email = EmailField()
+    password = CharField(write_only=True)
 
     def validate(self, attrs):
         email = attrs.get('email')

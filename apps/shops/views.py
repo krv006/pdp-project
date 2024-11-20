@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from shops.filters import CategoryFilter, ProductFilter
-from shops.models import Category, Product, Order, OrderItem
-from shops.serializers import CategoryModelSerializer, ProductListModelSerializer, OrderSerializer
+from shops.models import Category, Product, Order, OrderItem, Address
+from shops.serializers import CategoryModelSerializer, ProductListModelSerializer, OrderSerializer, \
+    AddressModelSerializer
 
 
 @extend_schema(tags=['shops'])
@@ -75,10 +76,16 @@ class ProductsByCategoryView(ListAPIView):
 class OrderListCreateAPIView(ListCreateAPIView):
     queryset = Order.objects.prefetch_related('items__product').all()
     serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = IsAuthenticated,
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         order = serializer.save()
         return Response(serializer.data, status=201)
+
+@extend_schema(tags=['shops'])
+class AddressListCreateAPIView(ListCreateAPIView):
+    queryset = Address.objects.all()
+    serializer_class = AddressModelSerializer
+    permission_classes = IsAuthenticated,

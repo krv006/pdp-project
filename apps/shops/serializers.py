@@ -1,5 +1,7 @@
 from rest_framework.serializers import ModelSerializer, DecimalField
-from .models import Product, Category, Order, OrderItem
+
+from users.serializers import UserModelSerializer
+from .models import Product, Category, Order, OrderItem, Address
 
 
 class CategoryModelSerializer(ModelSerializer):
@@ -17,6 +19,12 @@ class ProductListModelSerializer(ModelSerializer):
                   'material', 'lining', 'made_from', 'category',)
 
 
+class AddressModelSerializer(ModelSerializer):
+    class Meta:
+        model = Address
+        fields = '__all__'
+
+
 class OrderItemSerializer(ModelSerializer):
     product = ProductListModelSerializer(read_only=True)
 
@@ -27,10 +35,12 @@ class OrderItemSerializer(ModelSerializer):
 
 class OrderSerializer(ModelSerializer):
     items = OrderItemSerializer(many=True)
+    address = AddressModelSerializer(read_only=True)
+    owner = UserModelSerializer(read_only=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'address', 'owner', 'payment', 'items']
+        fields = ['id', 'payment', 'address', 'owner', 'items']
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')

@@ -5,7 +5,7 @@ from shops.views import (
     ProductListCreateAPIView,
     ProductsByCategoryView,
     # OrderViewSet
-    OrderListCreateAPIView,
+    OrderListCreateAPIView, AddressListCreateAPIView,
 )
 
 router = DefaultRouter()
@@ -15,6 +15,7 @@ urlpatterns = [
     path('categories/', CategoryListCreateAPIView.as_view(), name='categories'),
     path('products/', ProductListCreateAPIView.as_view(), name='products'),
     path('order/', OrderListCreateAPIView.as_view(), name='order'),
+    path('address/', AddressListCreateAPIView.as_view(), name='address'),
     path('categories/<int:category_id>/products/', ProductsByCategoryView.as_view(), name='products-by-category'),
 ]
 

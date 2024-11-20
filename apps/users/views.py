@@ -1,12 +1,19 @@
 from django.contrib.auth import get_user_model
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, GenericAPIView
+from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from users.serializers import RegisterUserModelSerializer, LoginUserModelSerializer
+from users.models import User
+from users.serializers import RegisterUserModelSerializer, LoginUserModelSerializer, UserModelSerializer
+
+
+@extend_schema(tags=['users'])
+class UserListAPIView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserModelSerializer
 
 
 @extend_schema(tags=['users'])
@@ -30,12 +37,11 @@ class LoginAPIView(GenericAPIView):
     permission_classes = AllowAny,
     authentication_classes = ()
 
-    # This method should be defined for GenericAPIView to work correctly
     def get_serializer_class(self):
         return LoginUserModelSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)  # This will work now
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         refresh = RefreshToken.for_user(user)
