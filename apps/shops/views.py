@@ -1,14 +1,15 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, ListAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from shops.filters import CategoryFilter, ProductFilter
 from shops.models import Category, Product, Order, OrderItem, Address
-from shops.serializers import CategoryModelSerializer, ProductListModelSerializer, OrderSerializer, \
-    AddressModelSerializer
+from shops.serializers import CategoryModelSerializer, ProductListModelSerializer, OrderModelSerializer, \
+    AddressModelSerializer, OperatorModelSerializer
+from users.models import Operator
 
 
 @extend_schema(tags=['shops'])
@@ -54,7 +55,7 @@ class ProductsByCategoryView(ListAPIView):
 # @extend_schema(tags=['order'])
 # class OrderViewSet(ModelViewSet):
 #     queryset = Order.objects.prefetch_related('items__product').all()
-#     serializer_class = OrderSerializer
+#     serializer_class = OrderModelSerializer
 #
 #     def create(self, request, *args, **kwargs):
 #         data = request.data
@@ -72,10 +73,18 @@ class ProductsByCategoryView(ListAPIView):
 #         serializer = self.get_serializer(order)
 #         return Response(serializer.data)
 
+
+@extend_schema(tags=['shops'])
+class AddressListCreateAPIView(ListCreateAPIView):
+    queryset = Address.objects.all()
+    serializer_class = AddressModelSerializer
+    permission_classes = IsAuthenticated,
+
+
 @extend_schema(tags=['order'])
 class OrderListCreateAPIView(ListCreateAPIView):
     queryset = Order.objects.prefetch_related('items__product').all()
-    serializer_class = OrderSerializer
+    serializer_class = OrderModelSerializer
     permission_classes = IsAuthenticated,
 
     def create(self, request, *args, **kwargs):
@@ -84,8 +93,16 @@ class OrderListCreateAPIView(ListCreateAPIView):
         order = serializer.save()
         return Response(serializer.data, status=201)
 
-@extend_schema(tags=['shops'])
-class AddressListCreateAPIView(ListCreateAPIView):
-    queryset = Address.objects.all()
-    serializer_class = AddressModelSerializer
+    def get_queryset(self):
+        operator_id = self.kwargs.get('operator_id')
+        return Order.objects.filter(operator_id=operator_id)
+
+
+@extend_schema(tags=['order-operator'])
+class OrderListByOperatorAPIView(ListAPIView):
+    serializer_class = OrderModelSerializer
     permission_classes = IsAuthenticated,
+
+    def get_queryset(self):
+        operator_id = self.kwargs.get('operator_id')
+        return Order.objects.filter(operator_id=operator_id)

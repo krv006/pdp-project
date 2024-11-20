@@ -1,13 +1,15 @@
 from django.contrib.auth import get_user_model
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView, ListCreateAPIView, \
+    RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from users.models import User
-from users.serializers import RegisterUserModelSerializer, LoginUserModelSerializer, UserModelSerializer
+from users.models import User, Operator
+from users.serializers import RegisterUserModelSerializer, LoginUserModelSerializer, UserModelSerializer, \
+    OperatorModelSerializer
 
 
 @extend_schema(tags=['users'])
@@ -49,3 +51,17 @@ class LoginAPIView(GenericAPIView):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         }, status=status.HTTP_200_OK)
+
+
+@extend_schema(tags=['operator'])
+class OperatorListCreateAPIView(ListCreateAPIView):
+    queryset = Operator.objects.all()
+    serializer_class = OperatorModelSerializer
+    permission_classes = IsAuthenticated,
+
+
+@extend_schema(tags=['operator'])
+class OperatorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Operator.objects.all()
+    serializer_class = OperatorModelSerializer
+    permission_classes = IsAuthenticated,

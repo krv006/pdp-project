@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import BooleanField, EmailField, CharField, TextChoices, OneToOneField, DateField, SET_NULL
+from django.db.models import BooleanField, EmailField, CharField, TextChoices, OneToOneField, DateField, SET_NULL, Model
 
 from shops.models import TimeBaseModel
 from users.managers import CustomUserManager
@@ -24,7 +24,7 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
 
-class Operator(TimeBaseModel):
+class Operator(Model):
     user = OneToOneField('users.User', SET_NULL, null=True, blank=True, related_name='operators',
                          verbose_name='User', limit_choices_to={'type': 'Operator'})
     passport = CharField(max_length=30, unique=True, verbose_name="passport for operator")

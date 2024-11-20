@@ -1,5 +1,5 @@
 from django.db.models import Model, PositiveIntegerField, ForeignKey, CASCADE, EmailField, ImageField, TextChoices, \
-    SmallIntegerField, BooleanField, URLField, TextField, CharField, DateTimeField, Model, SlugField
+    SmallIntegerField, BooleanField, URLField, TextField, CharField, DateTimeField, Model, SlugField, DateField
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 from mptt.models import MPTTModel, TreeForeignKey
@@ -128,13 +128,32 @@ class Image(Model):
 
 
 class Order(TimeBaseModel):
+    class StatusType(TextChoices):
+        NEW = 'new', 'New'
+        READY = "ready", 'Ready'
+        DELIVERING = "delivering", 'Delivering'
+        DELIVERED = "delivered", 'Delivered'
+        CANT_PHONE = "cant_phone", 'Cant_phone'
+        BROKEN = "broken", 'Broken'
+        CANCELED = "canceled", 'Canceled'
+        ARCHIVED = "archived", 'Archived'
+
+    status = CharField(max_length=50, choices=StatusType.choices, default=StatusType.NEW, verbose_name="status")
     product = ForeignKey('shops.Product', CASCADE, related_name='orders')
     address = ForeignKey('shops.Address', CASCADE, related_name='orders')
     owner = ForeignKey('users.User', CASCADE, related_name='orders')
     payment = ForeignKey('shops.Payment', CASCADE, related_name='orders')
+    operator = ForeignKey('users.Operator', CASCADE, null=True, blank=True, related_name='orders')
+    send_order_date = DateField(null=True, blank=True, verbose_name="send order date")
+    comment_operator = CharField(max_length=255, null=True, blank=True,
+                                 verbose_name="the operator's comment for the order")
 
     def __str__(self):
-        return f"Order {self.id} for {self.owner.email}"
+        return self.status
+
+    @property
+    def order_count(self):
+        return self.status.count('new')
 
 
 class OrderItem(Model):
@@ -144,7 +163,6 @@ class OrderItem(Model):
 
     def __str__(self):
         return f"{self.product.name} - {self.quantity} pcs"
-
 
 
 class QuickOrder(Model):

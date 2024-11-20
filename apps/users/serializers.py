@@ -3,13 +3,13 @@ from django.core.exceptions import ValidationError
 from rest_framework.fields import EmailField, CharField
 from rest_framework.serializers import ModelSerializer, Serializer
 
-from users.models import User
+from users.models import User, Operator
 
 
 class UserModelSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'is_active', 'email', ]
+        fields = 'id', 'is_active', 'email', 'type',
 
 
 # Register serializer
@@ -43,3 +43,9 @@ class LoginUserModelSerializer(Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+class OperatorModelSerializer(ModelSerializer):
+    class Meta:
+        model = Operator
+        fields = 'id', 'user', 'passport', 'start_date', 'end_date',
