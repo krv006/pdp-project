@@ -27,7 +27,7 @@ class User(AbstractUser):
 class Operator(Model):
     user = OneToOneField('users.User', SET_NULL, null=True, blank=True, related_name='operators',
                          verbose_name='User', limit_choices_to={'type': 'Operator'})
-    passport = CharField(max_length=30, unique=True, verbose_name="passport for operator")
+    passport = CharField(max_length=30, unique=True, verbose_name="passport id for operator")
     start_date = DateField(null=True, blank=True, verbose_name='time to start work')
     end_date = DateField(null=True, blank=True, verbose_name='time to end work')
 

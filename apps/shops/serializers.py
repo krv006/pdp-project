@@ -2,7 +2,7 @@ from rest_framework.fields import BooleanField
 from rest_framework.serializers import ModelSerializer, DecimalField
 
 from users.models import User
-from users.serializers import UserModelSerializer
+from users.serializers import UserModelSerializer, OperatorModelSerializer
 from shops.models import Product, Category, Order, OrderItem, Address
 
 
@@ -39,10 +39,11 @@ class OrderModelSerializer(ModelSerializer):
     items = OrderItemSerializer(many=True)
     address = AddressModelSerializer(read_only=True)
     owner = UserModelSerializer(read_only=True)
+    operator = OperatorModelSerializer(read_only=True)
 
     class Meta:
         model = Order
-        fields = 'id', 'payment', 'address', 'owner', 'items',
+        fields = 'id', 'payment', 'address', 'owner', 'operator', 'items',
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
@@ -56,12 +57,3 @@ class OrderModelSerializer(ModelSerializer):
         representation = super().to_representation(instance)
         representation['items'] = OrderItemSerializer(instance.items.all(), many=True).data
         return representation
-
-
-class OperatorModelSerializer(ModelSerializer):
-    order = OrderModelSerializer(read_only=True)
-    order_type = BooleanField(default=False)
-
-    class Meta:
-        model = User
-        fields = 'type', 'order', 'order_type',

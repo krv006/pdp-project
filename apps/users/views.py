@@ -54,7 +54,7 @@ class LoginAPIView(GenericAPIView):
 
 
 @extend_schema(tags=['operator'])
-class OperatorListCreateAPIView(ListCreateAPIView):
+class OperatorListAPIView(ListAPIView):
     queryset = Operator.objects.all()
     serializer_class = OperatorModelSerializer
     permission_classes = IsAuthenticated,

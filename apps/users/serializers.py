@@ -46,6 +46,8 @@ class LoginUserModelSerializer(Serializer):
 
 
 class OperatorModelSerializer(ModelSerializer):
+    user = UserModelSerializer(read_only=True)
+
     class Meta:
         model = Operator
         fields = 'id', 'user', 'passport', 'start_date', 'end_date',
