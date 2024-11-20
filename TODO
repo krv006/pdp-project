@@ -45,3 +45,11 @@ ADDRESS
 
 USER
     SERIALIZER ❎ -> BUNDA USERLARDI GET QILA OLISH KERAK
+
+OPERATOR
+    MODEL
+    SERIALIZER
+    VIEW
+    operator di get qilganda user.type operatorga teng bob qolganlari chiqishi kerak
+    operator qisimdi toliq qilish kere boladi
+    + order bilan xam boglab order da qaysi operator bor ekanini korish kere boladi
