@@ -93,9 +93,6 @@ class OrderListCreateAPIView(ListCreateAPIView):
         order = serializer.save()
         return Response(serializer.data, status=201)
 
-    def get_queryset(self):
-        operator_id = self.kwargs.get('operator_id')
-        return Order.objects.filter(operator_id=operator_id)
 
 
 @extend_schema(tags=['order-operator'])

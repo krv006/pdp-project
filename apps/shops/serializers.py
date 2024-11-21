@@ -55,5 +55,5 @@ class OrderModelSerializer(ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['items'] = OrderItemSerializer(instance.items.all(), many=True).data
+        representation['items'] = OrderItemSerializer(instance.items.all(), many=True, context=self.context).data
         return representation

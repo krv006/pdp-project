@@ -16,8 +16,8 @@ urlpatterns = [
     path('products/', ProductListCreateAPIView.as_view(), name='products'),
     path('order/', OrderListCreateAPIView.as_view(), name='order'),
     path('address/', AddressListCreateAPIView.as_view(), name='address'),
-    path('categories/<int:category_id>/products/', ProductsByCategoryView.as_view(), name='products-by-category'),
-    path('operators/<int:operator_id>/orders/', OrderListByOperatorAPIView.as_view(), name='operator-orders'),
+    path('categories/<int:pk>/products/', ProductsByCategoryView.as_view(), name='products-by-category'),
+    path('operators/<int:pk>/orders/', OrderListByOperatorAPIView.as_view(), name='operator-orders'),
 
 ]
 
