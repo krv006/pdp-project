@@ -59,9 +59,16 @@ class OperatorListAPIView(ListAPIView):
     serializer_class = OperatorModelSerializer
     permission_classes = IsAuthenticated,
 
+    def get_queryset(self):
+        return User.objects.filter(user__type="operator")
+
 
 @extend_schema(tags=['operator'])
 class OperatorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Operator.objects.all()
     serializer_class = OperatorModelSerializer
     permission_classes = IsAuthenticated,
+
+    # def get_queryset(self):
+    #     return User.objects.filter(type="operator")
+    # todo shell da ishladi bu

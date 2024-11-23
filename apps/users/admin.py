@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
 from users.forms import CustomAdminAuthenticationForm
-from users.models import User
+from users.models import User, Operator
 
 admin.AdminSite.login_form = CustomAdminAuthenticationForm
 
@@ -12,3 +12,8 @@ class UserAdmin(ModelAdmin):
     list_display = 'username', 'first_name', 'last_name', 'email', 'is_active', 'type',
     list_editable = 'is_active', 'type',
     search_fields = 'email',
+
+
+@admin.register(Operator)
+class OperatorAdmin(ModelAdmin):
+    pass

@@ -75,6 +75,8 @@ class Product(Model):
     material = CharField(max_length=255, null=True, blank=True)
     lining = CharField(max_length=255, null=True, blank=True)  # todo podkladka
     made_from = CharField(max_length=255, null=True, blank=True)
+    created_at = DateTimeField(auto_now_add=True)
+    update_at = DateTimeField(auto_now=True)
     category = ForeignKey('shops.Category', CASCADE, related_name='products')
 
     def __str__(self):

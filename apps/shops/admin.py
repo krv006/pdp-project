@@ -9,12 +9,17 @@ from shops.models import Product, Category, Address, Brand, Payment, Image, Site
 
 @admin.register(Product)
 class ProductAdmin(ModelAdmin):
-    pass
+    list_display = 'name', 'price', 'size', 'poll', 'color',
+    list_editable = 'size', 'poll', 'color',
+    list_filter = 'created_at',
+    ordering = '-created_at',
+    readonly_fields = 'created_at',
 
 
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin):
-    pass
+    list_display = 'name',
+    ordering = '-created_at',
 
 
 @admin.register(Address)
@@ -37,9 +42,11 @@ class SiteSettingsAdmin(ModelAdmin):
 class QuickOrderAdmin(ModelAdmin):
     pass
 
+
 @admin.register(Order)
 class OrderAdmin(ModelAdmin):
     pass
+
 
 @admin.register(Payment)
 class PaymentAdmin(ModelAdmin):
