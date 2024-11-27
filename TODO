@@ -53,3 +53,6 @@ OPERATOR
     operator di get qilganda user.type operatorga teng bob qolganlari chiqishi kerak
     operator qisimdi toliq qilish kere boladi
     + order bilan xam boglab order da qaysi operator bor ekanini korish kere boladi
+
+
+PAYMENT UCHUN VIEW SERIALIZER

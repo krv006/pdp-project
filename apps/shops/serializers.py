@@ -1,4 +1,4 @@
-from rest_framework.fields import BooleanField
+from rest_framework.fields import BooleanField, ListField, IntegerField
 from rest_framework.serializers import ModelSerializer, DecimalField
 
 from users.models import User
@@ -37,7 +37,8 @@ class OrderItemSerializer(ModelSerializer):
 
 class OrderModelSerializer(ModelSerializer):
     items = OrderItemSerializer(many=True)
-    address = AddressModelSerializer(read_only=True)
+    # address = AddressModelSerializer(many=True)
+    address = ListField(child=IntegerField())
     owner = UserModelSerializer(read_only=True)
     operator = OperatorModelSerializer(read_only=True)
 
@@ -54,6 +55,7 @@ class OrderModelSerializer(ModelSerializer):
         return order
 
     def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['items'] = OrderItemSerializer(instance.items.all(), many=True, context=self.context).data
-        return representation
+        repr = super().to_representation(instance)
+        repr['items'] = OrderItemSerializer(instance.items.all(), many=True, context=self.context).data
+        repr['address'] = AddressModelSerializer(instance.address.all(), many=True, context=self.context).data
+        return repr
