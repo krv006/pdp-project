@@ -71,4 +71,4 @@ class OperatorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     # def get_queryset(self):
     #     return User.objects.filter(type="operator")
-    # todo shell da ishladi bu
+    # # todo shell da ishladi bu
