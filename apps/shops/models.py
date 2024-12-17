@@ -176,3 +176,8 @@ class QuickOrder(Model):
 class SiteSettings(Model):
     instagram = URLField()
     telegram = URLField()
+
+
+class Warehouse(BaseSlugModel):
+    product = ForeignKey('shops.Product', CASCADE, related_name='warehouses')
+    quantity = PositiveIntegerField(help_text="Blok or Number", db_default=0)
